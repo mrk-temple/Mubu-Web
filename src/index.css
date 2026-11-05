@@ -1,0 +1,329 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* An editorial workspace: type, rules and real content carry the hierarchy. */
+.mubu-today { max-width: 1000px; padding-top: 28px; }
+.mubu-page { max-width: 860px; }
+.mubu-projects .mubu-page { max-width: 1040px; }
+.mubu-intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; padding-bottom: 20px; margin-bottom: 18px; border-bottom: 1px solid var(--line-strong); }
+.mubu-eyebrow { font: 12px/1.6 ui-monospace, Consolas, monospace; letter-spacing: .09em; color: var(--fg-muted); }
+.mubu-intro h1 { margin-top: 10px; font-family: var(--font-sans); font-size: clamp(28px, 3vw, 42px); font-weight: 650; letter-spacing: -.04em; }
+.mubu-intro-copy { margin-top: 10px; font-size: 14px; line-height: 1.8; color: var(--fg-muted); max-width: 34em; }
+.mubu-index { display: flex; flex-shrink: 0; gap: 24px; }
+.mubu-index dt { font-size: 12px; color: var(--fg-muted); }
+.mubu-index dd { margin: 8px 0 0; font: 28px/1.2 ui-monospace, Consolas, monospace; letter-spacing: -.07em; }
+.mubu-composer { padding: 16px; border: 1px solid var(--line-strong); background: var(--bg-card); border-radius: 3px; }
+.mubu-composer > .mubu-eyebrow { margin: 0 12px 8px; }
+.mubu-composer textarea { min-height: 84px; }
+.mubu-sidebar { border-color: var(--line-strong); }
+.mubu-sidebar nav a { border-radius: 3px; }
+.mubu-sidebar nav a[aria-current="page"] { box-shadow: inset 2px 0 var(--accent); }
+.mubu-topbar { min-height: 64px; flex-shrink: 0; }
+.mubu-topbar h1 { font-weight: 650; }
+.mubu-page-title { margin: 12px 0 16px; font-size: clamp(26px, 3vw, 34px); font-weight: 650; letter-spacing: -.035em; }
+.mubu-project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-left: 1px solid var(--line-strong); border-top: 1px solid var(--line-strong); margin-top: 32px; }
+.mubu-project-card { display: flex; flex-direction: column; gap: 24px; min-height: 235px; height: 100%; padding: 28px; border-right: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); background: var(--bg-card); }
+.mubu-project-card .editorial { font-family: var(--font-sans); font-size: 22px; font-weight: 600; }
+.mubu-project-card > :last-child { display: flex; gap: 16px; text-align: left; margin-top: auto; }
+.mubu-project-tabs button { padding: 14px 18px; }
+@media (max-width: 700px) {
+  .mubu-today { padding-top: 28px; }
+  .mubu-intro { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .mubu-index { width: 100%; gap: 0; }
+  .mubu-index > div { flex: 1; border-left: 1px solid var(--line); padding-left: 16px; }
+  .mubu-composer { padding: 14px 8px; }
+  .mubu-composer > div { flex-wrap: wrap; gap: 12px; }
+  .mubu-composer > div > div { width: 100%; }
+  .mubu-composer > div > div > span { white-space: nowrap; }
+  .mubu-project-grid { grid-template-columns: 1fr; }
+  .mubu-project-card { min-height: 190px; padding: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+/* ─────────────────────────────────────────────
+   幕布 · 设计令牌
+   Calm / Editorial / Minimal / Spatial / Warm
+   ───────────────────────────────────────────── */
+
+:root {
+  color-scheme: light;
+
+  /* 纸面 */
+  --bg: #f5f4ef;
+  --bg-raised: #eeeee7;
+  --bg-card: #ffffff;
+  --bg-hover: rgba(0, 0, 0, 0.035);
+  --bg-active: rgba(0, 0, 0, 0.055);
+
+  /* 墨色 */
+  --fg: #1d1d1f;
+  --fg-muted: #666860;
+  --fg-faint: #70736a;
+
+  /* 边与线 */
+  --line: rgba(0, 0, 0, 0.12);
+  --line-strong: rgba(0, 0, 0, 0.11);
+
+  /* 唯一强调色：墨绿 */
+  --accent: #556b5d;
+  --accent-soft: rgba(85, 107, 93, 0.1);
+  --accent-line: rgba(85, 107, 93, 0.32);
+
+  /* 连接线：低饱和 */
+  --edge: rgba(29, 29, 31, 0.16);
+  --edge-hover: rgba(85, 107, 93, 0.55);
+
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.03), 0 8px 24px rgba(0, 0, 0, 0.035);
+  --shadow-lift: 0 2px 6px rgba(0, 0, 0, 0.05), 0 16px 40px rgba(0, 0, 0, 0.07);
+  --shadow-panel: -1px 0 0 var(--line), -24px 0 48px rgba(0, 0, 0, 0.04);
+
+  --scrim: rgba(29, 29, 31, 0.18);
+
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-lg: 12px;
+
+  --dot: rgba(29, 29, 31, 0.09);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --bg: #171716;
+  --bg-raised: #1c1c1b;
+  --bg-card: #20201f;
+  --bg-hover: rgba(255, 255, 255, 0.045);
+  --bg-active: rgba(255, 255, 255, 0.075);
+
+  --fg: #f2f2ee;
+  --fg-muted: #999994;
+  --fg-faint: #96968d;
+
+  --line: rgba(255, 255, 255, 0.07);
+  --line-strong: rgba(255, 255, 255, 0.13);
+
+  --accent: #8fa893;
+  --accent-soft: rgba(143, 168, 147, 0.13);
+  --accent-line: rgba(143, 168, 147, 0.36);
+
+  --edge: rgba(242, 242, 238, 0.16);
+  --edge-hover: rgba(143, 168, 147, 0.6);
+
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.28);
+  --shadow-lift: 0 2px 8px rgba(0, 0, 0, 0.4), 0 18px 44px rgba(0, 0, 0, 0.42);
+  --shadow-panel: -1px 0 0 var(--line), -24px 0 48px rgba(0, 0, 0, 0.35);
+
+  --scrim: rgba(0, 0, 0, 0.5);
+
+  --dot: rgba(242, 242, 238, 0.08);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-raised: var(--bg-raised);
+  --color-card: var(--bg-card);
+  --color-fg: var(--fg);
+  --color-muted: var(--fg-muted);
+  --color-faint: var(--fg-faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-line: var(--accent-line);
+  --color-edge: var(--edge);
+  --color-edge-hover: var(--edge-hover);
+  --color-scrim: var(--scrim);
+
+  --font-sans: Inter, "SF Pro Display", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Songti SC", "Noto Serif SC", Georgia, serif;
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius-lg);
+
+  --shadow-soft: var(--shadow-soft);
+  --shadow-lift: var(--shadow-lift);
+  --shadow-panel: var(--shadow-panel);
+
+  --ease-quiet: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.7;
+    letter-spacing: 0.005em;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "tnum" 0;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--fg);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 550;
+    line-height: 1.35;
+    letter-spacing: -0.012em;
+    margin: 0;
+  }
+
+  button,
+  input,
+  textarea {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+  }
+
+  input,
+  textarea {
+    background: transparent;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-line);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--line-strong);
+    border: 3px solid transparent;
+    background-clip: content-box;
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--fg-faint);
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer components {
+  /* 极淡点阵，取代明显网格 */
+  .dot-field {
+    background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+    background-size: 22px 22px;
+    background-position: -1px -1px;
+  }
+
+  .paper {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .quiet-hover {
+    transition: background-color 160ms var(--ease-quiet),
+      color 160ms var(--ease-quiet);
+  }
+  .quiet-hover:hover {
+    background-color: var(--bg-hover);
+  }
+
+  .hairline {
+    border-color: var(--line);
+  }
+
+  .editorial {
+    font-family: var(--font-serif);
+    letter-spacing: 0.01em;
+  }
+}
+
+/* React Flow 覆写：去掉流程图的工业感 */
+@layer components {
+  .react-flow__attribution {
+    display: none;
+  }
+  .react-flow__handle {
+    width: 7px;
+    height: 7px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--accent-line);
+    opacity: 0;
+    transition: opacity 160ms var(--ease-quiet),
+      transform 160ms var(--ease-quiet);
+  }
+  .react-flow__node:hover .react-flow__handle,
+  .react-flow__node.selected .react-flow__handle,
+  .react-flow__handle.connecting,
+  .react-flow__handle:hover {
+    opacity: 1;
+  }
+  .react-flow__handle-left {
+    left: -4px;
+  }
+  .react-flow__handle-right {
+    right: -4px;
+  }
+  .react-flow__edge-path {
+    stroke: var(--edge);
+    stroke-width: 1;
+    transition: stroke 180ms var(--ease-quiet), stroke-width 180ms var(--ease-quiet);
+  }
+  .react-flow__edge:hover .react-flow__edge-path,
+  .react-flow__edge.selected .react-flow__edge-path {
+    stroke: var(--edge-hover);
+    stroke-width: 1.5;
+  }
+  .react-flow__edge-interaction {
+    stroke-width: 14;
+  }
+  .react-flow__connection-path {
+    stroke: var(--accent-line);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+  .react-flow__controls {
+    box-shadow: none;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--bg-card);
+  }
+  .react-flow__controls-button {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--line);
+    color: var(--fg-muted);
+    width: 28px;
+    height: 28px;
+  }
+  .react-flow__controls-button:hover {
+    background: var(--bg-hover);
+    color: var(--fg);
+  }
+  .react-flow__controls-button svg {
+    fill: currentColor;
+  }
+}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="幕布 — 记录一个点，连接一条线，形成属于自己的思想之网。" />
+    <meta name="theme-color" content="#F7F7F5" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23F7F7F5'/%3E%3Ccircle cx='16' cy='8' r='2.6' fill='%23556B5D'/%3E%3Cpath d='M16 12v8' stroke='%23556B5D' stroke-width='1.4' stroke-linecap='round' opacity='.55'/%3E%3Ccircle cx='16' cy='24' r='2.6' fill='%23556B5D'/%3E%3C/svg%3E" />
+    <title>幕布 · 让想法彼此相遇</title>
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("mubu.theme");
+          if (t === '"dark"' || t === "dark") {
+            document.documentElement.classList.add("dark");
+          } else if (!t) {
+            try {
+              var s = JSON.parse(localStorage.getItem("mubu.settings") || "{}");
+              if (s && s.theme === "dark") document.documentElement.classList.add("dark");
+            } catch (e) {}
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
